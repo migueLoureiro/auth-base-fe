@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { ThemeToggle } from '../components/ThemeToggle'
 import styles from './HomePage.module.css'
 
 export default function HomePage() {
@@ -15,6 +16,7 @@ export default function HomePage() {
 
   return (
     <div className={styles.container}>
+      <ThemeToggle />
       <div className={styles.card}>
         {user.picture && (
           <img
