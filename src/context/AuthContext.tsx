@@ -8,8 +8,27 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null)
 
+const USER_STORAGE_KEY = 'auth_user'
+
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUserState] = useState<User | null>(() => {
+    try {
+      const stored = localStorage.getItem(USER_STORAGE_KEY)
+      return stored ? JSON.parse(stored) : null
+    } catch {
+      return null
+    }
+  })
+
+  const setUser = (user: User | null) => {
+    setUserState(user)
+    if (user) {
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user))
+    } else {
+      localStorage.removeItem(USER_STORAGE_KEY)
+    }
+  }
+
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       {children}
